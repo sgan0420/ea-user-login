@@ -1,68 +1,171 @@
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+/* ===== Base Reset ===== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
+html,
+body {
+  height: 100%;
+  width: 100%;
+  font-family: "Outfit", "Segoe UI", system-ui, sans-serif;
+  font-size: 16px;
+  background-color: #f4f4f8;
+  color: #1a1a1a;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+/* ===== Typography ===== */
+h1,
+h2,
+h3 {
+  font-weight: 600;
+  line-height: 1.2;
 }
 
 h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+  font-size: 2.8rem;
+  margin-bottom: 1rem;
+  background: linear-gradient(90deg, #00c6ff, #0072ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 2px 4px rgba(0, 114, 255, 0.2);
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
+h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+p {
+  margin-bottom: 1.5rem;
+  color: #444;
+  font-weight: 400;
+  font-size: 1.1rem;
+}
+
+/* ===== Links ===== */
+a {
+  color: #007bff;
+  text-decoration: none;
   font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+a:hover {
+  text-decoration: underline;
+}
+
+/* ===== Buttons ===== */
+button {
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(to right, #007bff, #00c6ff);
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0, 114, 255, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background: linear-gradient(to right, #00c6ff, #007bff);
+  transform: scale(1.05);
+}
+
+/* ===== Forms ===== */
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 0.6rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  background-color: #fff;
+  transition: border-color 0.2s ease;
+}
+
+input:focus {
+  border-color: #00c6ff;
+  outline: none;
+}
+
+/* ===== Wrapper Layout ===== */
+.wrapper-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  background-color: #f9f9f9;
+}
+
+.left-panel {
+  flex: 1;
+  background: white;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+}
+
+.logo {
+  width: 180px;
+  margin-bottom: 2rem;
+  align-self: flex-start;
+}
+
+/* Main content below logo */
+.left-panel-content {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  animation: fadeInUp 0.8s ease-out both;
+}
+
+/* Background image panel */
+.right-panel {
+  flex: 1;
+  background-size: cover;
+  background-position: center;
+}
+
+/* ===== Animation ===== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
   }
-  a:hover {
-    color: #747bff;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  button {
-    background-color: #f9f9f9;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .wrapper-container {
+    flex-direction: column;
+  }
+
+  .left-panel {
+    padding: 2rem;
+  }
+
+  .right-panel {
+    height: 40vh;
+  }
+
+  .logo {
+    align-self: center;
   }
 }

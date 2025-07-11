@@ -4,17 +4,17 @@ export default function HomePage() {
   const navigate = useNavigate();
 
   return (
-    <div style={{ padding: "2rem", textAlign: "center" }}>
+    <div>
       <h1>Welcome to Electronic Arts</h1>
-      <p>Your portal to user registration and login.</p>
+      <p>Your gateway to the EA universe.</p>
       <div style={{ marginTop: "2rem" }}>
+        <button onClick={() => navigate("/login")}>Login</button>
         <button
-          onClick={() => navigate("/login")}
-          style={{ marginRight: "1rem" }}
+          onClick={() => navigate("/register")}
+          style={{ marginLeft: "1rem" }}
         >
-          Login
+          Register
         </button>
-        <button onClick={() => navigate("/register")}>Register</button>
       </div>
     </div>
   );
