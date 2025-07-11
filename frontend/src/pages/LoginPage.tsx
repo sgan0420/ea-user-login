@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-import OtpInput from "react-otp-input";
+import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 
 const schema = yup.object({
@@ -26,13 +26,16 @@ export default function LoginPage() {
     mode: "onTouched",
   });
 
-  const [otp, setOtp] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
   const onSubmit = (data: LoginFormData) => {
-    const fullData = { ...data, dynamicCode: otp };
-    console.log("LOGIN:", fullData);
-    alert("Login submitted!");
+    navigate("/verify-otp", {
+      state: {
+        flowType: "login",
+        username: data.username,
+      },
+    });
   };
 
   return (
@@ -43,7 +46,7 @@ export default function LoginPage() {
       <h2>Login</h2>
 
       <div>
-        <label>Username</label>
+        <label>EA Username</label>
         <input
           type="text"
           {...register("username")}
@@ -76,30 +79,8 @@ export default function LoginPage() {
         )}
       </div>
 
-      <div>
-        <label>Dynamic Code</label>
-        <OtpInput
-          value={otp}
-          onChange={setOtp}
-          numInputs={6}
-          shouldAutoFocus
-          inputType="tel"
-          renderInput={(props) => <input {...props} />}
-          inputStyle={{
-            width: "2.5rem",
-            height: "2.5rem",
-            fontSize: "1rem",
-            borderRadius: "8px",
-            border: "1px solid #ccc",
-            margin: "0 0.2rem",
-            textAlign: "center",
-          }}
-          containerStyle={{ justifyContent: "center" }}
-        />
-      </div>
-
-      <button type="submit" disabled={!isValid || otp.length !== 6}>
-        Login
+      <button type="submit" disabled={!isValid}>
+        Next - Verify Code
       </button>
     </form>
   );

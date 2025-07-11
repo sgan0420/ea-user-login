@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 
 const schema = yup.object().shape({
@@ -54,9 +55,14 @@ export default function RegisterPage() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showPasswordChecklist, setShowPasswordChecklist] = useState(false);
 
+  const navigate = useNavigate();
   const onSubmit = (data: FormData) => {
-    console.log("REGISTERED:", data);
-    alert("Registration successful!");
+    navigate("/verify-otp", {
+      state: {
+        flowType: "register",
+        email: data.email,
+      },
+    });
   };
 
   return (
@@ -162,7 +168,7 @@ export default function RegisterPage() {
       </div>
 
       <button type="submit" disabled={!isValid}>
-        Register
+        Create Account & Verify Email
       </button>
     </form>
   );
