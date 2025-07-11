@@ -31,6 +31,7 @@ h1 {
   margin-bottom: 1rem;
   background: linear-gradient(90deg, #00c6ff, #0072ff);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow: 0 2px 4px rgba(0, 114, 255, 0.2);
 }
@@ -79,15 +80,15 @@ button:hover:not(.button-inline) {
 }
 
 button:disabled {
-  background: linear-gradient(to right, #d0d0d0, #c0c0c0);
-  color: #888;
+  background: linear-gradient(to right, #c4c4c4, #b2b2b2);
+  color: #686868;
   cursor: not-allowed;
   box-shadow: none;
   transform: none;
 }
 
 button:hover:disabled {
-  background: linear-gradient(to right, #d0d0d0, #c0c0c0);
+  background: linear-gradient(to right, #c4c4c4, #b2b2b2);
   transform: none;
 }
 
@@ -144,12 +145,24 @@ label {
 
 .left-panel {
   flex: 1;
-  background: white;
+  background: linear-gradient(45deg, #f3e9ff, #c5ddf4, #c2f1ff, #ffffff);
+  background-size: 400% 400%;
+  animation: geminiGradient 6s linear infinite;
   padding: 3rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   overflow-y: auto;
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes geminiGradient {
+  0%   { background-position: 0% 33%; }
+  25%  { background-position: 33% 50%; }
+  50%  { background-position: 66% 50%; }
+  75%  { background-position: 100% 50%; }
+  100% { background-position: 0% 33%; }
 }
 
 .logo {

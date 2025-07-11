@@ -62,6 +62,7 @@ export default function VerifyOtpPage() {
           ? `An OTP has been sent to ${state.email}`
           : `Enter the OTP sent to your email to complete login.`}
       </p>
+      {/* Todo: add the hidden email address in the message */}
 
       <OtpInput
         value={otp}

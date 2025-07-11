@@ -70,7 +70,7 @@ export default function RegisterPage() {
       onSubmit={handleSubmit(onSubmit)}
       style={{ maxWidth: 400, width: "100%" }}
     >
-      <h2>Register</h2>
+      <h2>Create Your EA Account</h2>
 
       <div>
         <label>Email Address</label>
