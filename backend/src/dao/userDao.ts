@@ -175,9 +175,7 @@ export const getUserProfile = async (
 ): Promise<{ data: Omit<UserRecord, "password"> | null; error: any }> => {
   const { data, error } = await supabase
     .from("users")
-    .select(
-      "id, username, email, is_verified, created_at, last_login_at, updated_at"
-    )
+    .select("id, username, email, is_verified, created_at, updated_at")
     .eq("id", userId)
     .maybeSingle();
 
