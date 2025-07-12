@@ -4,7 +4,6 @@ import {
   verifyEmailAndLogin,
   initiateLogin,
   completeLogin,
-  getUserProfile,
   resendVerificationOtp,
   resendLoginOtp,
 } from "../services/userService";
@@ -96,29 +95,6 @@ export const completeLoginController = async (
     const { userId, otpCode } = req.body;
 
     const result = await completeLogin(userId, otpCode);
-
-    res.status(200).json({
-      success: true,
-      data: result,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-/**
- * Get user profile
- * GET /api/auth/profile/:userId
- */
-export const getProfileController = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): Promise<void> => {
-  try {
-    const { userId } = req.params;
-
-    const result = await getUserProfile(userId);
 
     res.status(200).json({
       success: true,

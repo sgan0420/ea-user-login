@@ -6,7 +6,6 @@ import {
   VerifyEmailAndLoginResponse,
   InitiateLoginResponse,
   CompleteLoginResponse,
-  GetUserProfileResponse,
   ResendOtpResponse,
 } from "../models/service/UserServiceModel";
 import {
@@ -285,31 +284,6 @@ export const completeLogin = async (
     user: userProfile,
     message: "Login successful",
   };
-};
-
-/**
- * Gets user profile information
- * @param userId - User's ID
- * @returns Promise with user profile
- */
-export const getUserProfile = async (
-  userId: string
-): Promise<GetUserProfileResponse> => {
-  // Validation
-  if (!userId || !userId.trim()) {
-    throw createValidationError("User ID is required");
-  }
-
-  // Get user profile
-  const { data: user, error } = await userDao.getUserProfile(userId);
-  if (error) {
-    throw createDatabaseError("Failed to get user profile");
-  }
-  if (!user) {
-    throw createNotFoundError("User");
-  }
-
-  return { user };
 };
 
 /**

@@ -4,7 +4,6 @@ import {
   verifyEmailController,
   loginController,
   completeLoginController,
-  getProfileController,
   resendVerificationController,
   resendLoginOtpController,
 } from "../controllers/authController";
@@ -46,14 +45,6 @@ router.post("/login", loginController);
  * @body    { userId: string, otpCode: string }
  */
 router.post("/complete-login", completeLoginController);
-
-/**
- * @route   GET /api/auth/profile/:userId
- * @desc    Get user profile
- * @access  Private (TODO: Add authentication middleware)
- * @params  { userId: string }
- */
-router.get("/profile/:userId", getProfileController);
 
 /**
  * @route   POST /api/auth/resend-verification

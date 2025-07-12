@@ -56,13 +56,6 @@ export interface ResendOtpInput {
   email: string;
 }
 
-/**
- * Get user profile input model
- */
-export interface GetUserProfileInput {
-  userId: string;
-}
-
 // ====== OUTPUT MODELS ======
 
 /**
@@ -98,13 +91,6 @@ export interface InitiateLoginResponse {
 export interface CompleteLoginResponse {
   user: UserResponseData;
   message: string;
-}
-
-/**
- * Get user profile response model
- */
-export interface GetUserProfileResponse {
-  user: UserResponseData;
 }
 
 /**
