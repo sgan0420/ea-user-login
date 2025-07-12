@@ -99,10 +99,3 @@ export interface CompleteLoginResponse {
 export interface ResendOtpResponse {
   message: string;
 }
-
-/**
- * Generic message response model
- */
-export interface MessageResponse {
-  message: string;
-}
