@@ -4,6 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
+import { authApi, ApiError } from "../services/authApi";
 
 const schema = yup.object({
   username: yup
@@ -27,15 +28,49 @@ export default function LoginPage() {
   });
 
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const onSubmit = (data: LoginFormData) => {
-    navigate("/verify-otp", {
-      state: {
-        flowType: "login",
-        username: data.username,
-      },
-    });
+  const onSubmit = async (data: LoginFormData) => {
+    setIsLoading(true);
+    setError("");
+
+    try {
+      const response = await authApi.login({
+        identifier: data.username,
+        password: data.password,
+      });
+
+      // Navigate to OTP verification with appropriate state
+      if (response.requiresVerification) {
+        // User needs email verification first
+        navigate("/verify-otp", {
+          state: {
+            flowType: "register", // Use register flow for email verification
+            email: data.username, // Assuming username could be email
+            userId: response.userId,
+          },
+        });
+      } else {
+        // Normal login OTP flow
+        navigate("/verify-otp", {
+          state: {
+            flowType: "login",
+            userId: response.userId,
+            username: data.username,
+          },
+        });
+      }
+    } catch (error) {
+      if (error instanceof ApiError) {
+        setError(error.message);
+      } else {
+        setError("An unexpected error occurred. Please try again.");
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -79,8 +114,12 @@ export default function LoginPage() {
         )}
       </div>
 
-      <button type="submit" disabled={!isValid}>
-        Next - Verify Code
+      {error && (
+        <div style={{ color: "red", marginBottom: "1rem" }}>{error}</div>
+      )}
+
+      <button type="submit" disabled={!isValid || isLoading}>
+        {isLoading ? "Logging in..." : "Next - Verify Code"}
       </button>
     </form>
   );

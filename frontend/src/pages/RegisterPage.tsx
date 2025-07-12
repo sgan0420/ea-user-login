@@ -4,6 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
+import { authApi, ApiError } from "../services/authApi";
 
 const schema = yup.object().shape({
   email: yup
@@ -54,15 +55,38 @@ export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showPasswordChecklist, setShowPasswordChecklist] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const navigate = useNavigate();
-  const onSubmit = (data: FormData) => {
-    navigate("/verify-otp", {
-      state: {
-        flowType: "register",
+
+  const onSubmit = async (data: FormData) => {
+    setIsLoading(true);
+    setError("");
+
+    try {
+      await authApi.register({
         email: data.email,
-      },
-    });
+        username: data.username,
+        password: data.password,
+      });
+
+      // Navigate to OTP verification page with email
+      navigate("/verify-otp", {
+        state: {
+          flowType: "register",
+          email: data.email,
+        },
+      });
+    } catch (error) {
+      if (error instanceof ApiError) {
+        setError(error.message);
+      } else {
+        setError("An unexpected error occurred. Please try again.");
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -167,8 +191,12 @@ export default function RegisterPage() {
         )}
       </div>
 
-      <button type="submit" disabled={!isValid}>
-        Create Account & Verify Email
+      {error && (
+        <div style={{ color: "red", marginBottom: "1rem" }}>{error}</div>
+      )}
+
+      <button type="submit" disabled={!isValid || isLoading}>
+        {isLoading ? "Creating Account..." : "Create Account & Verify Email"}
       </button>
     </form>
   );
