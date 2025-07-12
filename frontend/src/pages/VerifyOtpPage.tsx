@@ -11,8 +11,9 @@ type LocationState =
     }
   | {
       flowType: "login";
-      username: string;
+      identifier: string;
       userId: string;
+      email?: string;
     };
 
 export default function VerifyOtpPage() {
@@ -54,7 +55,7 @@ export default function VerifyOtpPage() {
         });
 
         alert("✅ Email verified! You are now logged in.");
-        navigate("/home"); // Navigate to home or dashboard
+        navigate("/home");
       } else {
         // Login OTP verification flow
         await authApi.completeLogin({
@@ -63,7 +64,7 @@ export default function VerifyOtpPage() {
         });
 
         alert("✅ Login successful!");
-        navigate("/home"); // Navigate to home or dashboard
+        navigate("/home");
       }
     } catch (error) {
       if (error instanceof ApiError) {
@@ -84,9 +85,13 @@ export default function VerifyOtpPage() {
         await authApi.resendVerificationOtp({ email: state.email });
         alert("Verification code resent to your email.");
       } else {
-        // For login, we need the email. You might want to pass this in state
-        // For now, we'll show an error
-        setError("Unable to resend login OTP. Please try logging in again.");
+        // For login flow, use the email from state
+        if (state.email) {
+          await authApi.resendLoginOtp({ email: state.email });
+          alert("Login code resent to your email.");
+        } else {
+          setError("Unable to resend login OTP. Please try logging in again.");
+        }
       }
     } catch (error) {
       if (error instanceof ApiError) {
@@ -95,6 +100,19 @@ export default function VerifyOtpPage() {
         setError("Failed to resend OTP. Please try again.");
       }
     }
+  };
+
+  const maskEmail = (email: string): string => {
+    const [local, domain] = email.split("@");
+    if (!local || !domain) return email;
+
+    if (local.length <= 2) {
+      return `${local[0]}***@${domain}`;
+    }
+
+    return `${local[0]}${"*".repeat(local.length - 2)}${
+      local[local.length - 1]
+    }@${domain}`;
   };
 
   return (
@@ -107,8 +125,10 @@ export default function VerifyOtpPage() {
 
       <p>
         {state.flowType === "register"
-          ? `We've sent a verification code to ${state.email}`
-          : "We've sent a login code to your email"}
+          ? `We've sent a verification code to ${maskEmail(state.email)}.`
+          : `We've sent a login code to ${maskEmail(
+              state.email ? state.email : "your email"
+            )}.`}
       </p>
 
       <div

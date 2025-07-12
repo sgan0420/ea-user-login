@@ -57,7 +57,8 @@ export default function LoginPage() {
           state: {
             flowType: "login",
             userId: response.userId,
-            username: data.identifier,
+            identifier: data.identifier,
+            email: response.user?.email,
           },
         });
       }
