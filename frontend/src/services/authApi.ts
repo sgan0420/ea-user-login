@@ -62,6 +62,7 @@ export interface VerifyEmailResponse {
     is_verified: boolean;
     created_at: string;
   };
+  token: string;
   message: string;
 }
 
@@ -78,6 +79,7 @@ export interface CompleteLoginResponse {
     is_verified: boolean;
     created_at: string;
   };
+  token: string;
   message: string;
 }
 
@@ -87,6 +89,16 @@ export interface ResendOtpRequest {
 
 export interface ResendOtpResponse {
   message: string;
+}
+
+export interface GetUserDataResponse {
+  user: {
+    id: string;
+    email: string;
+    username: string;
+    is_verified: boolean;
+    created_at: string;
+  };
 }
 
 // Custom error class for API errors
@@ -104,6 +116,16 @@ export class ApiError extends Error {
   }
 }
 
+// Token management
+const TOKEN_KEY = "auth_token";
+
+export const tokenManager = {
+  setToken: (token: string) => localStorage.setItem(TOKEN_KEY, token),
+  getToken: () => localStorage.getItem(TOKEN_KEY),
+  removeToken: () => localStorage.removeItem(TOKEN_KEY),
+  hasToken: () => !!localStorage.getItem(TOKEN_KEY),
+};
+
 // Generic API request handler
 async function apiRequest<T>(
   endpoint: string,
@@ -116,6 +138,15 @@ async function apiRequest<T>(
       "Content-Type": "application/json",
     },
   };
+
+  // Add authorization header if token exists
+  const token = tokenManager.getToken();
+  if (token) {
+    defaultOptions.headers = {
+      ...defaultOptions.headers,
+      Authorization: `Bearer ${token}`,
+    };
+  }
 
   const finalOptions = {
     ...defaultOptions,
@@ -211,5 +242,17 @@ export const authApi = {
       method: "POST",
       body: JSON.stringify(data),
     });
+  },
+
+  // Get user data (protected)
+  getUserData: async (): Promise<GetUserDataResponse> => {
+    return apiRequest<GetUserDataResponse>("/user", {
+      method: "GET",
+    });
+  },
+
+  // Logout
+  logout: () => {
+    tokenManager.removeToken();
   },
 };

@@ -6,7 +6,9 @@ import {
   completeLoginController,
   resendVerificationController,
   resendLoginOtpController,
+  getUserDataController,
 } from "../controllers/authController";
+import { authenticateToken } from "../middleware/authMiddleware";
 
 const router = Router();
 
@@ -61,5 +63,13 @@ router.post("/resend-verification", resendVerificationController);
  * @body    { email: string }
  */
 router.post("/resend-login-otp", resendLoginOtpController);
+
+/**
+ * @route   GET /api/auth/user
+ * @desc    Get user data (protected)
+ * @access  Private (requires JWT token)
+ * @header  Authorization: Bearer <token>
+ */
+router.get("/user", authenticateToken, getUserDataController);
 
 export default router;

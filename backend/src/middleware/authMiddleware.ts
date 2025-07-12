@@ -1,28 +1,31 @@
 import { Request, Response, NextFunction } from "express";
 import { verifyToken } from "../utils/jwtUtils";
+import { createUnauthorizedError } from "../utils/errorUtils";
 
 export interface AuthRequest extends Request {
-  user?: any;
+  user?: {
+    userId: string;
+    email: string;
+  };
 }
 
-/**
- * Middleware to protect routes and extract user info from JWT
- */
-export function authMiddleware(
+export const authenticateToken = (
   req: AuthRequest,
   res: Response,
   next: NextFunction
-): Response | void {
+): void => {
   const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({ success: false, message: "No token provided" });
+  const token = authHeader && authHeader.split(" ")[1]; // Bearer TOKEN
+
+  if (!token) {
+    throw createUnauthorizedError("Access token required");
   }
-  const token = authHeader.split(" ")[1];
+
   try {
     const decoded = verifyToken(token);
     req.user = decoded;
     next();
-  } catch (err) {
-    return res.status(401).json({ success: false, message: "Invalid token" });
+  } catch (error) {
+    throw createUnauthorizedError("Invalid or expired token");
   }
-}
+};

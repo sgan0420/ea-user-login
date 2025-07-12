@@ -7,6 +7,7 @@ import {
   InitiateLoginResponse,
   CompleteLoginResponse,
   ResendOtpResponse,
+  GetUserDataResponse,
 } from "../models/service/UserServiceModel";
 import {
   createValidationError,
@@ -18,6 +19,7 @@ import {
 } from "../utils/errorUtils";
 import bcrypt from "bcrypt";
 import { generateAndSaveOtp, verifyOtp } from "./otpService";
+import { generateToken } from "../utils/jwtUtils";
 
 /**
  * User Service Layer
@@ -169,8 +171,15 @@ export const verifyEmailAndLogin = async (
     throw createDatabaseError("Failed to get user profile");
   }
 
+  // Generate JWT token
+  const token = generateToken({
+    userId: updatedUser.id,
+    email: updatedUser.email,
+  });
+
   return {
     user: updatedUser,
+    token,
     message: "Email verified successfully. You are now logged in.",
   };
 };
@@ -285,8 +294,15 @@ export const completeLogin = async (
     throw createDatabaseError("Failed to get user profile");
   }
 
+  // Generate JWT token
+  const token = generateToken({
+    userId: userProfile.id,
+    email: userProfile.email,
+  });
+
   return {
     user: userProfile,
+    token,
     message: "Login successful",
   };
 };
@@ -360,5 +376,25 @@ export const resendLoginOtp = async (
 
   return {
     message: "Login code sent to your email",
+  };
+};
+
+/**
+ * Gets user data (protected route)
+ * @param userId - User's ID from JWT token
+ * @returns Promise with user data
+ */
+export const getUserData = async (
+  userId: string
+): Promise<GetUserDataResponse> => {
+  // Get user profile
+  const { data: userProfile, error: profileError } =
+    await userDao.getUserProfile(userId);
+  if (profileError || !userProfile) {
+    throw createDatabaseError("Failed to get user profile");
+  }
+
+  return {
+    user: userProfile,
   };
 };

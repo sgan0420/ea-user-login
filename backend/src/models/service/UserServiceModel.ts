@@ -71,6 +71,7 @@ export interface RegisterUserResponse {
  */
 export interface VerifyEmailAndLoginResponse {
   user: UserResponseData;
+  token: string;
   message: string;
 }
 
@@ -90,6 +91,7 @@ export interface InitiateLoginResponse {
  */
 export interface CompleteLoginResponse {
   user: UserResponseData;
+  token: string;
   message: string;
 }
 
@@ -98,4 +100,11 @@ export interface CompleteLoginResponse {
  */
 export interface ResendOtpResponse {
   message: string;
+}
+
+/**
+ * Get user data response model
+ */
+export interface GetUserDataResponse {
+  user: UserResponseData;
 }

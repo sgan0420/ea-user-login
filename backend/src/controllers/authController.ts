@@ -6,7 +6,9 @@ import {
   completeLogin,
   resendVerificationOtp,
   resendLoginOtp,
+  getUserData,
 } from "../services/userService";
+import { AuthRequest } from "../middleware/authMiddleware";
 
 /**
  * Authentication Controller
@@ -141,6 +143,29 @@ export const resendLoginOtpController = async (
     const { email } = req.body;
 
     const result = await resendLoginOtp(email);
+
+    res.status(200).json({
+      success: true,
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Get user data (protected route)
+ * GET /api/auth/user
+ */
+export const getUserDataController = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const userId = req.user!.userId;
+
+    const result = await getUserData(userId);
 
     res.status(200).json({
       success: true,

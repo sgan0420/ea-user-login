@@ -1,13 +1,42 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { authApi, ApiError, tokenManager } from "../services/authApi";
 
 export default function WelcomePage() {
   const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
   const [showAnimation, setShowAnimation] = useState(false);
+  const [user, setUser] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    // Check if user is authenticated
+    if (!tokenManager.hasToken()) {
+      navigate("/login", { replace: true });
+      return;
+    }
+
+    // Fetch user data
+    const fetchUserData = async () => {
+      try {
+        const result = await authApi.getUserData();
+        setUser(result.user);
+      } catch (error) {
+        if (error instanceof ApiError && error.status === 401) {
+          // Token expired or invalid, redirect to login
+          tokenManager.removeToken();
+          navigate("/login", { replace: true });
+          return;
+        }
+        console.error("Failed to fetch user data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchUserData();
+
     // Fade in animation
     const timer = setTimeout(() => setIsVisible(true), 100);
 
@@ -20,7 +49,7 @@ export default function WelcomePage() {
       clearTimeout(timer);
       clearInterval(timeInterval);
     };
-  }, []);
+  }, [navigate]);
 
   const handleTryMeClick = () => {
     setShowAnimation(true);
@@ -28,6 +57,11 @@ export default function WelcomePage() {
     setTimeout(() => {
       setShowAnimation(false);
     }, 2500);
+  };
+
+  const handleLogout = () => {
+    authApi.logout();
+    navigate("/login", { replace: true });
   };
 
   const formatTime = (date: Date) => {
@@ -47,6 +81,25 @@ export default function WelcomePage() {
       day: "numeric",
     });
   };
+
+  if (isLoading) {
+    return (
+      <div
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background:
+            "linear-gradient(135deg, #0f0f23 0%, #1a1a3a 50%, #2d1b69 100%)",
+          color: "#ffffff",
+          fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, sans-serif',
+        }}
+      >
+        <div>Loading...</div>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -104,6 +157,50 @@ export default function WelcomePage() {
           zIndex: 10,
         }}
       >
+        {/* User info and logout */}
+        {user && (
+          <div
+            style={{
+              position: "absolute",
+              top: "20px",
+              right: "20px",
+              display: "flex",
+              alignItems: "center",
+              gap: "15px",
+              background: "rgba(255, 255, 255, 0.1)",
+              backdropFilter: "blur(10px)",
+              border: "1px solid rgba(255, 255, 255, 0.2)",
+              borderRadius: "15px",
+              padding: "10px 20px",
+            }}
+          >
+            <span style={{ color: "#a0a0b0", fontSize: "0.9rem" }}>
+              {user.username} ({user.email})
+            </span>
+            <button
+              onClick={handleLogout}
+              style={{
+                background: "rgba(255, 255, 255, 0.1)",
+                border: "1px solid rgba(255, 255, 255, 0.3)",
+                borderRadius: "8px",
+                color: "#ffffff",
+                padding: "5px 12px",
+                cursor: "pointer",
+                fontSize: "0.8rem",
+                transition: "all 0.3s ease",
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.background = "rgba(255, 255, 255, 0.2)";
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.background = "rgba(255, 255, 255, 0.1)";
+              }}
+            >
+              Logout
+            </button>
+          </div>
+        )}
+
         {/* Welcome heading */}
         <h1
           style={{

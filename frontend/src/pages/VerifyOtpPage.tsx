@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import OtpInput from "react-otp-input";
-import { authApi, ApiError } from "../services/authApi";
+import { authApi, ApiError, tokenManager } from "../services/authApi";
 
 type LocationState =
   | {
@@ -49,19 +49,25 @@ export default function VerifyOtpPage() {
     try {
       if (state.flowType === "register") {
         // Email verification flow
-        await authApi.verifyEmail({
+        const result = await authApi.verifyEmail({
           email: state.email,
           otpCode: otp,
         });
+
+        // Store JWT token
+        tokenManager.setToken(result.token);
 
         alert("✅ Email verified! You are now logged in.");
         navigate("/welcome");
       } else {
         // Login OTP verification flow
-        await authApi.completeLogin({
+        const result = await authApi.completeLogin({
           userId: state.userId,
           otpCode: otp,
         });
+
+        // Store JWT token
+        tokenManager.setToken(result.token);
 
         alert("✅ Login successful!");
         navigate("/welcome");
