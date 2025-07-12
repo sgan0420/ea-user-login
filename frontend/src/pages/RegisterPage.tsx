@@ -198,6 +198,28 @@ export default function RegisterPage() {
       <button type="submit" disabled={!isValid || isLoading}>
         {isLoading ? "Creating Account..." : "Create Account & Verify Email"}
       </button>
+
+      <p style={{ textAlign: "center", marginTop: "2rem" }}>
+        Already have an account?
+        <>
+          {" "}
+          <br />
+        </>
+        <button
+          type="button"
+          onClick={() => navigate("/login")}
+          style={{
+            background: "none",
+            border: "none",
+            color: "#007bff",
+            cursor: "pointer",
+            textDecoration: "underline",
+            fontSize: "inherit",
+          }}
+        >
+          Login here
+        </button>
+      </p>
     </form>
   );
 }

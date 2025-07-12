@@ -121,6 +121,28 @@ export default function LoginPage() {
       <button type="submit" disabled={!isValid || isLoading}>
         {isLoading ? "Logging in..." : "Next - Verify Code"}
       </button>
+
+      <p style={{ textAlign: "center", marginTop: "2rem" }}>
+        No account?
+        <>
+          {" "}
+          <br />
+        </>
+        <button
+          type="button"
+          onClick={() => navigate("/register")}
+          style={{
+            background: "none",
+            border: "none",
+            color: "#007bff",
+            cursor: "pointer",
+            textDecoration: "underline",
+            fontSize: "inherit",
+          }}
+        >
+          Create an account here
+        </button>
+      </p>
     </form>
   );
 }
