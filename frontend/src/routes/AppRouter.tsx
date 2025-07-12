@@ -4,6 +4,7 @@ import HomePage from "../pages/HomePage";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 import VerifyOtpPage from "../pages/VerifyOtpPage";
+import WelcomePage from "../pages/WelcomePage";
 import NotFoundPage from "../pages/NotFoundPage";
 
 export default function AppRouter() {
@@ -17,6 +18,7 @@ export default function AppRouter() {
           <Route path="verify-otp" element={<VerifyOtpPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
+        <Route path="welcome" element={<WelcomePage />} />
       </Routes>
     </BrowserRouter>
   );

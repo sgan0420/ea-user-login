@@ -55,7 +55,7 @@ export default function VerifyOtpPage() {
         });
 
         alert("✅ Email verified! You are now logged in.");
-        navigate("/home");
+        navigate("/welcome");
       } else {
         // Login OTP verification flow
         await authApi.completeLogin({
@@ -64,7 +64,7 @@ export default function VerifyOtpPage() {
         });
 
         alert("✅ Login successful!");
-        navigate("/home");
+        navigate("/welcome");
       }
     } catch (error) {
       if (error instanceof ApiError) {
