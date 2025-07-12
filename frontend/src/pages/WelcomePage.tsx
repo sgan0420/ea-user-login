@@ -161,11 +161,20 @@ export default function WelcomePage() {
             backdropFilter: "blur(10px)",
             border: "1px solid rgba(255, 255, 255, 0.2)",
             borderRadius: "15px",
-            padding: "10px 20px",
+            padding: "12px 20px",
             zIndex: 20,
+            minHeight: "40px",
           }}
         >
-          <span style={{ color: "#a0a0b0", fontSize: "0.9rem" }}>
+          <span
+            style={{
+              color: "#a0a0b0",
+              fontSize: "0.9rem",
+              lineHeight: "1.2",
+              margin: "0",
+              padding: "0",
+            }}
+          >
             {user.username} ({user.email})
           </span>
           <button
@@ -175,10 +184,16 @@ export default function WelcomePage() {
               border: "1px solid rgba(255, 255, 255, 0.3)",
               borderRadius: "8px",
               color: "#ffffff",
-              padding: "5px 12px",
+              padding: "8px 16px",
               cursor: "pointer",
               fontSize: "0.8rem",
               transition: "all 0.3s ease",
+              lineHeight: "1.2",
+              height: "32px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              margin: "0",
             }}
             onMouseOver={(e) => {
               e.currentTarget.style.background = "rgba(255, 255, 255, 0.2)";
