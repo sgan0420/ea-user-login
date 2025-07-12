@@ -44,10 +44,16 @@ export default function LoginPage() {
       // Navigate to OTP verification with appropriate state
       if (response.requiresVerification) {
         // User needs email verification first
+        // Backend should now include user.email in response
+        if (!response.user?.email) {
+          setError("Unable to get user email for verification. Please try again.");
+          return;
+        }
+        
         navigate("/verify-otp", {
           state: {
             flowType: "register", // Use register flow for email verification
-            email: data.identifier, // Could be email or username
+            email: response.user.email, // Use actual email from backend response
             userId: response.userId,
           },
         });

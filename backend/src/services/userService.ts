@@ -228,8 +228,11 @@ export const initiateLogin = async (
     // await emailService.sendVerificationOtp(user.email, otpCode);
     console.log(`[OTP] Verification code sent to ${user.email}: ${otpCode}`);
 
+    const { password: _, ...userWithoutPassword } = user;
+
     return {
       userId: user.id,
+      user: userWithoutPassword,
       message: "Email not verified. Verification code sent to your email.",
       otpSent: true,
       requiresVerification: true,
