@@ -7,11 +7,10 @@ import * as yup from "yup";
 import { authApi, ApiError } from "../services/authApi";
 
 const schema = yup.object({
-  username: yup
+  identifier: yup
     .string()
-    .required("Username is required.")
-    .min(4, "Username must be between 4 and 16 characters.")
-    .max(16, "Username must be between 4 and 16 characters."),
+    .required("Username or email is required.")
+    .min(4, "Please enter a valid username or email."),
   password: yup.string().required("Password is required."),
 });
 
@@ -38,7 +37,7 @@ export default function LoginPage() {
 
     try {
       const response = await authApi.login({
-        identifier: data.username,
+        identifier: data.identifier,
         password: data.password,
       });
 
@@ -48,7 +47,7 @@ export default function LoginPage() {
         navigate("/verify-otp", {
           state: {
             flowType: "register", // Use register flow for email verification
-            email: data.username, // Assuming username could be email
+            email: data.identifier, // Could be email or username
             userId: response.userId,
           },
         });
@@ -58,7 +57,7 @@ export default function LoginPage() {
           state: {
             flowType: "login",
             userId: response.userId,
-            username: data.username,
+            username: data.identifier,
           },
         });
       }
@@ -81,14 +80,14 @@ export default function LoginPage() {
       <h2>Login</h2>
 
       <div>
-        <label>EA Username</label>
+        <label>EA Username or Email</label>
         <input
           type="text"
-          {...register("username")}
-          className={errors.username ? "input-error" : ""}
+          {...register("identifier")}
+          className={errors.identifier ? "input-error" : ""}
         />
-        {errors.username && (
-          <p className="form-error">{errors.username.message}</p>
+        {errors.identifier && (
+          <p className="form-error">{errors.identifier.message}</p>
         )}
       </div>
 

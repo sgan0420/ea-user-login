@@ -145,7 +145,7 @@ label {
 
 .left-panel {
   flex: 1;
-  background: linear-gradient(#ffffff, #d79be2, #83e2ff, #ffffff);
+  background: linear-gradient(270deg, #ffffff, #dfb9e6, #abe1f1, #ffffff);
   background-size: 400% 400%;
   animation: geminiGradient 6s linear infinite;
   padding: 3rem;
@@ -159,7 +159,7 @@ label {
 
 @keyframes geminiGradient {
   0% {
-    background-position: 0% 66%;
+    background-position: 0% 33%;
   }
   25% {
     background-position: 33% 50%;
@@ -171,7 +171,7 @@ label {
     background-position: 100% 50%;
   }
   100% {
-    background-position: 0% 66%;
+    background-position: 0% 33%;
   }
 }
 
