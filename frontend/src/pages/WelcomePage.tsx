@@ -147,6 +147,51 @@ export default function WelcomePage() {
         }}
       />
 
+      {/* User info and logout - positioned outside main content */}
+      {user && (
+        <div
+          style={{
+            position: "absolute",
+            top: "20px",
+            right: "20px",
+            display: "flex",
+            alignItems: "center",
+            gap: "15px",
+            background: "rgba(255, 255, 255, 0.1)",
+            backdropFilter: "blur(10px)",
+            border: "1px solid rgba(255, 255, 255, 0.2)",
+            borderRadius: "15px",
+            padding: "10px 20px",
+            zIndex: 20,
+          }}
+        >
+          <span style={{ color: "#a0a0b0", fontSize: "0.9rem" }}>
+            {user.username} ({user.email})
+          </span>
+          <button
+            onClick={handleLogout}
+            style={{
+              background: "rgba(255, 255, 255, 0.1)",
+              border: "1px solid rgba(255, 255, 255, 0.3)",
+              borderRadius: "8px",
+              color: "#ffffff",
+              padding: "5px 12px",
+              cursor: "pointer",
+              fontSize: "0.8rem",
+              transition: "all 0.3s ease",
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.background = "rgba(255, 255, 255, 0.2)";
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.background = "rgba(255, 255, 255, 0.1)";
+            }}
+          >
+            Logout
+          </button>
+        </div>
+      )}
+
       {/* Main content */}
       <div
         style={{
@@ -157,50 +202,6 @@ export default function WelcomePage() {
           zIndex: 10,
         }}
       >
-        {/* User info and logout */}
-        {user && (
-          <div
-            style={{
-              position: "absolute",
-              top: "20px",
-              right: "20px",
-              display: "flex",
-              alignItems: "center",
-              gap: "15px",
-              background: "rgba(255, 255, 255, 0.1)",
-              backdropFilter: "blur(10px)",
-              border: "1px solid rgba(255, 255, 255, 0.2)",
-              borderRadius: "15px",
-              padding: "10px 20px",
-            }}
-          >
-            <span style={{ color: "#a0a0b0", fontSize: "0.9rem" }}>
-              {user.username} ({user.email})
-            </span>
-            <button
-              onClick={handleLogout}
-              style={{
-                background: "rgba(255, 255, 255, 0.1)",
-                border: "1px solid rgba(255, 255, 255, 0.3)",
-                borderRadius: "8px",
-                color: "#ffffff",
-                padding: "5px 12px",
-                cursor: "pointer",
-                fontSize: "0.8rem",
-                transition: "all 0.3s ease",
-              }}
-              onMouseOver={(e) => {
-                e.currentTarget.style.background = "rgba(255, 255, 255, 0.2)";
-              }}
-              onMouseOut={(e) => {
-                e.currentTarget.style.background = "rgba(255, 255, 255, 0.1)";
-              }}
-            >
-              Logout
-            </button>
-          </div>
-        )}
-
         {/* Welcome heading */}
         <h1
           style={{
@@ -303,7 +304,7 @@ export default function WelcomePage() {
           </button>
 
           <button
-            onClick={() => navigate("/login")}
+            onClick={handleLogout}
             style={{
               background: "transparent",
               border: "2px solid rgba(255, 255, 255, 0.2)",
