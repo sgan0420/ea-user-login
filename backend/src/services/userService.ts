@@ -106,6 +106,9 @@ export const registerUser = async (
 
   // TODO: Send OTP via email service
   // await emailService.sendVerificationOtp(createdUser.email, otpCode);
+  console.log(
+    `[OTP] Verification code sent to ${createdUser.email}: ${otpCode}`
+  );
 
   return {
     user: createdUser,
@@ -214,6 +217,7 @@ export const initiateLogin = async (
 
     // TODO: Send OTP via email service
     // await emailService.sendVerificationOtp(user.email, otpCode);
+    console.log(`[OTP] Verification code sent to ${user.email}: ${otpCode}`);
 
     return {
       userId: user.id,
@@ -228,6 +232,7 @@ export const initiateLogin = async (
 
   // TODO: Send OTP via email service
   // await emailService.sendLoginOtp(user.email, otpCode);
+  console.log(`[OTP] Login code sent to ${user.email}: ${otpCode}`);
 
   const { password: _, ...userWithoutPassword } = user;
 
@@ -317,6 +322,7 @@ export const resendVerificationOtp = async (
 
   // TODO: Send OTP via email service
   // await emailService.sendVerificationOtp(user.email, otpCode);
+  console.log(`[OTP] Verification code sent to ${user.email}: ${otpCode}`);
 
   return {
     message: "Verification code sent to your email",
@@ -350,6 +356,7 @@ export const resendLoginOtp = async (
 
   // TODO: Send OTP via email service
   // await emailService.sendLoginOtp(user.email, otpCode);
+  console.log(`[OTP] Login code sent to ${user.email}: ${otpCode}`);
 
   return {
     message: "Login code sent to your email",
