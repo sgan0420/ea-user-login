@@ -2,6 +2,8 @@
 
 A full-stack user authentication system with login, registration, and OTP verification features. Built with React (frontend) and Node.js/Express (backend), using Supabase as the database and authentication provider.
 
+Note that the documentation of the design and implementation of this project is available in the [ShijieGan-DesignDocumentation.pdf](./ShijieGan-DesignDocumentation.pdf) file. The pdf document provides a comprehensive overview of the system design with sequence diagrams, database schema, and detailed explanations of the implementation, especially focusing on the security aspects of the user login system.
+
 ## Table of Contents
 - [EA User Login System](#ea-user-login-system)
   - [Table of Contents](#table-of-contents)
@@ -152,6 +154,8 @@ To do manual testing, you can use the application in your browser:
 1. Open your browser and navigate to `http://localhost:5173` for the frontend.
 2. Use the provided UI to register, log in, and test the OTP verification flow.
 
+Please refer to [ShijieGan-DesignDocumentation](./ShijieGan-DesignDocumentation.pdf) Section 7: Step-by-Step Guidelines & Snapshots for detailed instructions on how to navigate through the application and test its features.
+
 ### Unit Tests
 
 To run the unit tests for the backend, navigate to the backend directory and run:
@@ -219,3 +223,4 @@ ea-user-login/
 
 ---
 
+See the [ShijieGan-DesignDocumentation.pdf](./ShijieGan-DesignDocumentation.pdf) for more detailed information on the design and implementation of this project, including sequence diagrams, database schema, and security considerations.
